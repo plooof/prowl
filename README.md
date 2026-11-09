@@ -1,78 +1,71 @@
-# React + TypeScript + Vite
+# prowl
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Prowl** is an uncompromising, local-first scouting and pit management web application built for the **First Robotics Competition (FRC)**. Designed to operate flawlessly in network-banned, low-connectivity stadium environments, Prowl uses a fully decentralized architecture to collect data in the stands and compile it instantly in the pits—all without requiring an internet connection.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*   **100% Offline-First (PWA):** Installable on any iOS, Android, Windows, Mac, or ChromeOS device. Runs entirely out of the local browser cache.
+*   **QR Data Pipeline:** Compresses robust JSON match metrics into highly dense QR codes to sync data from the stands to the pit manager without cell service.
+*   **Dexie.js Local Storage:** Backed by IndexedDB for high-speed, persistent data storage right on the scout's hardware.
+*   **Dual-Purpose Interface:** Built-in modular systems for both match scouting tracks and pit mechanic checklists.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+*   **Framework:** React 18+ via [Vite][1] (TypeScript template)
+*   **PWA Wrapper:** `vite-plugin-pwa`
+*   **Database:** [Dexie.js][2] (IndexedDB wrapper)
+*   **Compression:** `lz-string` (For ultra-dense QR payloads)
+*   **QR Engines:** `qrcode.react` (Generator) & `html5-qrcode` (Scanner)
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## 📦 Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Ensure you have [Node.js][3] installed (v18 or higher recommended).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+1. Clone the repository:
+```bash
+git clone https://github.com/plooof/prowl.git
+cd prowl
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
+```bash
+npm install
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Run the development server locally:
+```bash
+npm run dev
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+4. Build the offline production static assets:
+```bash
+npm run build
+```
+
+## 🗜️ The Data Workflow
 
 ```
+[ Stand Scouts: Phones/Tablets ] 
+      │ 
+      ├──> Saves data locally to IndexedDB (via Dexie.js)
+      └──> Generates Compressed QR Code on screen via lz-string
+            │
+            ▼
+[ Pit Manager: Laptop/Tablet ]
+      │
+      └──> Scans phone QR code using built-in webcam or hardware scanner
+      └──> Decompresses payload and populates Master Database
+```
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE][4] file for details. Built in accordance with the FIRST Robotics principles of *Gracious Professionalism* and *Coopertition*.
+
+[1]:	https://vite.dev/
+[2]:	https://dexie.org/
+[3]:	https://nodejs.org/
+[4]:	LICENSE
